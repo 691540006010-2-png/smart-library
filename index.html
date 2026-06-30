@@ -13,7 +13,7 @@
             --light-bg: #f8f9fa;
         }
         * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { margin: 0; background-color: var(--light-bg); color: #333; }
+        body { margin: 0; background-color: var(--light-bg); color: #333; display: flex; flex-direction: column; min-height: 100vh; }
         
         /* Navigation */
         nav { background-color: var(--primary-color); padding: 1rem; display: flex; justify-content: space-between; align-items: center; color: white; }
@@ -24,7 +24,7 @@
         nav ul li a:hover { color: var(--secondary-color); }
 
         /* Container & Pages */
-        .container { max-width: 1000px; margin: 30px auto; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .container { max-width: 1000px; margin: 30px auto; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); flex: 1; }
         .page { display: none; }
         .page.active { display: block; }
 
@@ -44,6 +44,11 @@
         .badge { padding: 5px 10px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; }
         .badge.available { background-color: #d4edda; color: #155724; }
         .badge.borrowed { background-color: #f8d7da; color: #721c24; }
+
+        /* Footer (ส่วนผู้จัดทำ) */
+        footer { background-color: var(--primary-color); color: white; text-align: center; padding: 20px; margin-top: 40px; font-size: 0.95rem; }
+        footer p { margin: 5px 0; }
+        footer .creator-title { font-weight: bold; color: var(--secondary-color); margin-bottom: 10px; }
     </style>
 </head>
 <body>
@@ -120,8 +125,14 @@
 
     </div>
 
+    <footer>
+        <div class="creator-title">👥 รายชื่อผู้จัดทำระบบ</div>
+        <p>1. นายรัชภูมิ ศรีตะนนท์</p>
+        <p>2. กิติบดี</p>
+    </footer>
+
     <script>
-        // ข้อมูลหนังสือเริ่มต้น 5 เล่มตามโจทย์
+        // ข้อมูลหนังสือเริ่มต้น 5 เล่ม
         let books = [
             { id: "B001", title: "คู่มือการใช้งาน HTML5 และ CSS3", author: "วันเฉลิม มั่นคง", status: "พร้อมใช้งาน" },
             { id: "B002", title: "เริ่มต้นเรียนรู้ JavaScript ฉบับรวบรัด", author: "มยุรี ดีใจ", status: "ถูกยืมแล้ว" },
@@ -135,12 +146,11 @@
             document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
             
-            // อัปเดตข้อมูลในหน้าต่างๆ เสมอเมื่อสลับหน้า
             renderBookList();
             populateSelectOptions();
         }
 
-        // ฟังก์ชันแสดงรายการหนังสือในตาราง (หน้ารายการ)
+        // ฟังก์ชันแสดงรายการหนังสือ
         function renderBookList() {
             const tbody = document.getElementById('book-table-body');
             tbody.innerHTML = '';
@@ -157,7 +167,7 @@
             });
         }
 
-        // ฟังก์ชันอัปเดตตัวเลือกหนังสือในหน้ายืม-คืน
+        // ฟังก์ชันอัปเดตตัวเลือกหนังสือ
         function populateSelectOptions() {
             const select = document.getElementById('borrow-book-select');
             select.innerHTML = '';
@@ -175,7 +185,7 @@
             const username = document.getElementById('username').value;
             document.getElementById('login-status').innerText = `สวัสดีคุณ ${username}! ยินดีต้อนรับสู่ระบบห้องสมุด`;
             alert(`ยินดีต้อนรับคุณ ${username}!`);
-            switchPage('list-page'); // ล็อกอินเสร็จให้เด้งไปหน้ารายการหนังสือ
+            switchPage('list-page');
         }
 
         // ฟังก์ชันจัดการการยืมหรือคืน
@@ -207,8 +217,6 @@
         function addNewBook() {
             const title = document.getElementById('new-title').value;
             const author = document.getElementById('new-author').value;
-            
-            // รันรหัสหนังสือถัดไปอัตโนมัติ เช่น B006, B007
             const nextId = "B" + String(books.length + 1).padStart(3, '0');
 
             const newBook = {
@@ -221,13 +229,12 @@
             books.push(newBook);
             alert(`เพิ่มหนังสือ "${title}" เข้าระบบสำเร็จแล้ว!`);
             
-            // รีเซ็ตฟอร์มและกลับไปหน้ารายการ
             document.getElementById('new-title').value = '';
             document.getElementById('new-author').value = '';
             switchPage('list-page');
         }
 
-        // เรียกใช้งานครั้งแรกเมื่อเปิดเว็บ
+        // เรียกใช้งานครั้งแรก
         renderBookList();
         populateSelectOptions();
     </script>
